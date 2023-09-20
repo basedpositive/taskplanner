@@ -5,15 +5,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.Parent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 import java.awt.*;
 import java.sql.Connection;
@@ -23,12 +15,14 @@ public class Main extends Application{
     public static void main(String[] args) {
         DatabaseConnector db = new DatabaseConnector();
         Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
+
         // db.createTable(connect, "task");
-        // db.insert_row(connect,"task","Some title","Some description",true);
+        // db.insert_row(connect,"task","","test length",true);
         // db.update_title(connect,"task","Some title","Car");
         // db.update_description(connect,"task","Some description","wash");
         // db.delete_row_by_id(connect, "task", 4);
-        db.read_data(connect,"task");
+
+        // db.read_data(connect,"task");
 
         launch(args);
     }
@@ -60,5 +54,22 @@ public class Main extends Application{
         stage.setHeight(516);
         stage.setResizable(false);
         stage.show();
+
+        createTaskButton.setOnAction(event -> {
+            String title = "Do";
+            String description = "something";
+            boolean status = true;
+
+            DatabaseConnector db = new DatabaseConnector();
+            Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
+            db.insert_row(connect, "task", title, description, status);
+        });
+
+        viewTaskButton.setOnAction(event -> {
+            DatabaseConnector db = new DatabaseConnector();
+            Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
+            db.read_data(connect,"task");
+        });
+
     }
 }

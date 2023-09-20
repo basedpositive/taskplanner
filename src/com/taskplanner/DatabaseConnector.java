@@ -19,7 +19,7 @@ public class DatabaseConnector {
     public void createTable(Connection connect, String table_name){
         Statement statement;
         try{
-            String query="create table "+ table_name +"(id SERIAL,title varchar(200),description varchar(200), status boolean ,duedate varchar(200));";
+            String query="create table "+ table_name +"(id SERIAL,title varchar(200),description varchar(200), status boolean ,duedate varchar(200), PRIMARY KEY(Id));";
             statement=connect.createStatement();
             statement.executeUpdate(query);
             System.out.println("Table Created.");
@@ -29,6 +29,7 @@ public class DatabaseConnector {
     }
     public void insert_row(Connection connect, String table_name, String title, String description, boolean status){
         Statement statement;
+        if (isValidTitle(title) && isValidDescription(description)) {
         try {
             String query = String.format("INSERT INTO %s (title, description, status) VALUES ('%s', '%s', %b);", table_name, title, description, status);
             statement = connect.createStatement();
@@ -36,8 +37,19 @@ public class DatabaseConnector {
             System.out.println("Row Inserted.");
         } catch (Exception e) {
             System.out.println(e);
-        }
+        } }
+        else {
+                System.out.println("Invalid data provided for insertion.");
+            }
     }
+    private boolean isValidTitle(String title) {
+        return title != null && !title.isEmpty() && title.length() <= 55;
+    }
+
+    private boolean isValidDescription(String description) {
+        return description != null && description.length() <= 3000;
+    }
+
     public void read_data(Connection connect, String table_name){
         Statement statement;
         ResultSet rs = null;
@@ -57,41 +69,56 @@ public class DatabaseConnector {
             System.out.println(e);
         }
     }
+
     public void update_title(Connection connect, String table_name, String old_title, String new_title){
         Statement statement;
+        if (isValidTitle(old_title) && isValidTitle(new_title)) {
         try {
             String query = String.format("update %s set title='%s' where title='%s'",table_name,new_title,old_title);
             statement = connect.createStatement();
             statement.executeUpdate(query);
-            System.out.print("Data Updated");
-            System.out.println(" *Title Updated");
-        }catch (Exception e){
+            System.out.print("Data Updated *Title Updated");
+        } catch (Exception e) {
             System.out.println(e);
+        } }
+        else {
+            System.out.println("Invalid data provided for update.");
         }
     }
+
     public void update_description(Connection connect, String table_name, String old_description, String new_description){
         Statement statement;
+        if (isValidDescription(old_description) && isValidDescription(new_description)) {
         try {
             String query = String.format("update %s set description='%s' where description='%s'",table_name,new_description,old_description);
             statement = connect.createStatement();
             statement.executeUpdate(query);
-            System.out.print("Data Updated");
-            System.out.println(" *Description Updated");
-        }catch (Exception e){
+            System.out.println("Data Updated *Description Updated");
+        } catch (Exception e) {
             System.out.println(e);
+        } }
+        else {
+            System.out.println("Invalid data provided for update.");
         }
     }
+
+
     public void delete_row_by_id(Connection connect,String table_name, int id){
         Statement statement;
+        if (id > 0) {
         try{
             String query=String.format("delete from %s where id= %s",table_name,id);
             statement = connect.createStatement();
             statement.executeUpdate(query);
             System.out.println("Data Deleted");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
+        } }
+        else {
+            System.out.println("Invalid data provided for deletion.");
         }
     }
+
     public void delete_table(Connection connect, String table_name){
         Statement statement;
         try {
