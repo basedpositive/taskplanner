@@ -17,25 +17,36 @@ public class DatabaseConnector {
     public void createTable(Connection connect, String table_name){
         Statement statement;
         try{
-            String query="create table "+ table_name +"(id SERIAL,title varchar(200),description varchar(200), status boolean ,duedate varchar(200), PRIMARY KEY(Id));";
+            String query = "CREATE TABLE " + table_name + " (" +
+                    "id SERIAL PRIMARY KEY," +
+                    "title VARCHAR(200)," +
+                    "description VARCHAR(200)," +
+                    "status BOOLEAN," +
+                    "createdAt TIMESTAMP," +
+                    "dueDate TIMESTAMP" +
+                    ");";
             statement=connect.createStatement();
             statement.executeUpdate(query);
             System.out.println("Table Created.");
         } catch (Exception e){ e.printStackTrace(); }
     }
 
-    public void insert_row(Connection connect, String table_name, String title, String description, boolean status){
+    public void insert_row(Connection connect, String table_name, String title, String description, String status, Timestamp createdAt, Timestamp dueDate) {
         Statement statement;
         if (isValidTitle(title) && isValidDescription(description)) {
             try {
-                String query = String.format("INSERT INTO %s (title, description, status) VALUES ('%s', '%s', %b);", table_name, title, description, status);
+                String query = String.format("INSERT INTO %s (title, description, status, createdAt, dueDate) VALUES ('%s', '%s', '%s', '%s', '%s');", table_name, title, description, status, createdAt, dueDate);
                 statement = connect.createStatement();
                 statement.executeUpdate(query);
                 System.out.println("Row Inserted.");
-            } catch (Exception e){ e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Некорректные значения.");
         }
-        else { System.out.println("Неккоректые значения."); }
     }
+
     private boolean isValidTitle(String title) {
         return title != null && !title.isEmpty() && title.length() <= 15; // sql...
     }

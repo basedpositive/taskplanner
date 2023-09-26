@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f068be34-0dd5-473b-aefe-e3ec81ac8241" name="Changes" comment="3st week, pre-finish? +validation">
+    <list default="true" id="f068be34-0dd5-473b-aefe-e3ec81ac8241" name="Changes" comment="3st week, +validation, crud">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taskplanner/DatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/DatabaseConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taskplanner/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taskplanner/Task.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/taskplanner/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/taskplanner/editAndDelete.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/editAndDelete.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/taskplanner/showCreateTaskDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/showCreateTaskDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/taskplanner/showViewTaskDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/showViewTaskDialog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,13 +164,21 @@
       <option name="project" value="LOCAL" />
       <updated>1695217737886</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="3st week, +validation, crud">
+      <created>1695715183835</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1695715183835</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1st week, +javaFX, sql" />
     <MESSAGE value="2st week, +docker-compose file, CRUD, +buttons" />
     <MESSAGE value="3st week, pre-finish? +validation" />
-    <option name="LAST_COMMIT_MESSAGE" value="3st week, pre-finish? +validation" />
+    <MESSAGE value="3st week, +validation, crud" />
+    <option name="LAST_COMMIT_MESSAGE" value="3st week, +validation, crud" />
   </component>
 </project>

@@ -27,11 +27,9 @@ public class editAndDelete {
             String new_title = titleField.getText();
             String new_description = descriptionField.getText();
 
-            // Вызовите метод для обновления заголовка и описания задачи
             db.update_title(connect, "task", selectedTask.getId(), new_title);
             db.update_description(connect, "task", selectedTask.getId(), new_description);
 
-            // Закройте окно создания задачи после сохранения
             createTaskStage.close();
         });
 
@@ -39,7 +37,6 @@ public class editAndDelete {
         Scene createTaskScene = new Scene(createTaskLayout, 300, 200);
         createTaskStage.setScene(createTaskScene);
 
-        // Покажите окно создания задачи
         createTaskStage.show();
     }
     static void deleteTask(Task selectedTask) {
@@ -48,7 +45,6 @@ public class editAndDelete {
 
         int taskId = selectedTask.getId();
 
-        // Вызовите метод для удаления задачи из базы данных
         db.delete_row_by_id(connect, "task", taskId);
     }
 }

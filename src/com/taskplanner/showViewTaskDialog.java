@@ -40,15 +40,25 @@ public class showViewTaskDialog {
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         descriptionColumn.setPrefWidth(150.0);
 
-        TableColumn<Task, Boolean> statusColumn = new TableColumn<>("Status");
+        TableColumn<Task, String> statusColumn = new TableColumn<>("Status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         statusColumn.setPrefWidth(80.0);
+
+        TableColumn<Task, Timestamp> createdAtColumn = new TableColumn<>("CreatedAt");
+        createdAtColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        createdAtColumn.setPrefWidth(150.0);
+
+        TableColumn<Task, Timestamp> dueDateColumn = new TableColumn<>("DueDate");
+        dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
+        dueDateColumn.setPrefWidth(150.0);
 
         List<TableColumn<Task, ?>> columns = new ArrayList<>();
         columns.add(idColumn);
         columns.add(titleColumn);
         columns.add(descriptionColumn);
         columns.add(statusColumn);
+        columns.add(createdAtColumn);
+        columns.add(dueDateColumn);
 
         tableTaskView.getColumns().addAll(columns);
 
@@ -79,7 +89,7 @@ public class showViewTaskDialog {
         ResultSet rs = null;
 
         try {
-            String query = "SELECT id, title, description, status FROM task";
+            String query = "SELECT id, title, description, status, createdAt, dueDate FROM task";
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
 
@@ -87,8 +97,10 @@ public class showViewTaskDialog {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String description = rs.getString("description");
-                boolean status = rs.getBoolean("status");
-                taskList.add(new Task(id, title, description, status));
+                String status = rs.getString("status");
+                Timestamp createdAt = rs.getTimestamp("createdAt");
+                Timestamp dueDate = rs.getTimestamp("dueDate");
+                taskList.add(new Task(id, title, description, status, createdAt, dueDate));
             }
         } catch (Exception e) {
             e.printStackTrace();
