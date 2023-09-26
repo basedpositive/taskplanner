@@ -1,53 +1,31 @@
-/* package com.taskplanner;
-
-import java.sql.Date;
+package com.taskplanner;
 
 public class Task {
-    private int id;
-    private String title;
-    private String description;
-    private String status;
-    private Date dueDate;
+    private final int id;
+    private final String title;
+    private final String description;
+    private final boolean status;
 
-    // Геттеры и сеттеры для всех полей
-    public int getId() {
-        return id;
+    public Task(int id, String title, String description, boolean status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
+    public boolean isStatus() {
         return status;
     }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
 }
-*/

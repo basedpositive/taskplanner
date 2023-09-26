@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f068be34-0dd5-473b-aefe-e3ec81ac8241" name="Changes" comment="2st week, +docker-compose file, CRUD, +buttons">
+    <list default="true" id="f068be34-0dd5-473b-aefe-e3ec81ac8241" name="Changes" comment="3st week, pre-finish? +validation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taskplanner/DatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/DatabaseConnector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taskplanner/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/taskplanner/Task.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,12 +18,26 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="8bc0ec1a-b133-4aa6-b074-a2df86b4b5fe" />
+        <option name="url" value="https://github.com/basedpositive/taskplanner.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -39,11 +54,11 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Jabbe/Документы/javaFiles/taskplanner/src/com/taskplanner/docker-compose.yml&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Jabbe/Документы/javaFiles/apache-log4j-2.20.0-bin&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.28610855&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Docker&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -140,12 +155,20 @@
       <option name="project" value="LOCAL" />
       <updated>1694702664916</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="3st week, pre-finish? +validation">
+      <created>1695217737886</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695217737886</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1st week, +javaFX, sql" />
     <MESSAGE value="2st week, +docker-compose file, CRUD, +buttons" />
-    <option name="LAST_COMMIT_MESSAGE" value="2st week, +docker-compose file, CRUD, +buttons" />
+    <MESSAGE value="3st week, pre-finish? +validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="3st week, pre-finish? +validation" />
   </component>
 </project>

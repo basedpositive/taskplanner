@@ -1,27 +1,23 @@
 package com.taskplanner;
 
 import javafx.application.Application;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
-import javafx.scene.control.Button;
-
-import java.awt.*;
-import java.sql.Connection;
+import java.sql.*;
 
 public class Main extends Application{
 
     public static void main(String[] args) {
-        DatabaseConnector db = new DatabaseConnector();
-        Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
-
+        // DatabaseConnector db = new DatabaseConnector();
+        // Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
         // db.createTable(connect, "task");
         // db.insert_row(connect,"task","","test length",true);
         // db.update_title(connect,"task","Some title","Car");
         // db.update_description(connect,"task","Some description","wash");
-        // db.delete_row_by_id(connect, "task", 4);
-
+        // db.delete_row_by_id(connect, "task", 14);
         // db.read_data(connect,"task");
 
         launch(args);
@@ -35,7 +31,7 @@ public class Main extends Application{
         text.setLayoutX(228);
 
         Button createTaskButton = new Button("Создать задачу");
-        Button viewTaskButton = new Button("Посмотреть задачу");
+        Button viewTaskButton = new Button("Посмотреть задачи");
 
         Group buttonGroup = new Group(createTaskButton, viewTaskButton);
 
@@ -47,6 +43,11 @@ public class Main extends Application{
 
         Group group = new Group(text, buttonGroup);
 
+        DatabaseConnector db = new DatabaseConnector();
+        final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
+        createTaskButton.setOnAction(e -> new showCreateTaskDialog(connect));
+        viewTaskButton.setOnAction(e -> new showViewTaskDialog(connect));
+
         Scene scene = new Scene(group);
         stage.setScene(scene);
         stage.setTitle("Task Manager");
@@ -54,22 +55,5 @@ public class Main extends Application{
         stage.setHeight(516);
         stage.setResizable(false);
         stage.show();
-
-        createTaskButton.setOnAction(event -> {
-            String title = "Do";
-            String description = "something";
-            boolean status = true;
-
-            DatabaseConnector db = new DatabaseConnector();
-            Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
-            db.insert_row(connect, "task", title, description, status);
-        });
-
-        viewTaskButton.setOnAction(event -> {
-            DatabaseConnector db = new DatabaseConnector();
-            Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
-            db.read_data(connect,"task");
-        });
-
     }
 }

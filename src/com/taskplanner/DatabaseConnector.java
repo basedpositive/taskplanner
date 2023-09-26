@@ -6,16 +6,14 @@ public class DatabaseConnector {
     public Connection connect_to_db(String dbname, String user, String pass) {
         Connection connect = null;
         try {
-            Class.forName("org.postgresql.Driver");
-            connect = DriverManager.getConnection("jdbc:postgresql://localhost/" + dbname, user, pass);
+            connect = DriverManager.getConnection("jdbc:postgresql://localhost/" + dbname, user, pass); // почему-то при "localhost/5432" вызывало ошибку
             if(connect != null){ System.out.println("Connection Established."); }
-            else System.out.println("Connection Failed");
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
+            else System.out.println("Connection Failed.");
+        } catch(Exception e) { e.printStackTrace(); }
+
         return connect;
     }
+
     public void createTable(Connection connect, String table_name){
         Statement statement;
         try{
@@ -23,31 +21,26 @@ public class DatabaseConnector {
             statement=connect.createStatement();
             statement.executeUpdate(query);
             System.out.println("Table Created.");
-        }catch (Exception e){
-            System.out.println(e);
-        }
+        } catch (Exception e){ e.printStackTrace(); }
     }
+
     public void insert_row(Connection connect, String table_name, String title, String description, boolean status){
         Statement statement;
         if (isValidTitle(title) && isValidDescription(description)) {
-        try {
-            String query = String.format("INSERT INTO %s (title, description, status) VALUES ('%s', '%s', %b);", table_name, title, description, status);
-            statement = connect.createStatement();
-            statement.executeUpdate(query);
-            System.out.println("Row Inserted.");
-        } catch (Exception e) {
-            System.out.println(e);
-        } }
-        else {
-                System.out.println("Invalid data provided for insertion.");
-            }
+            try {
+                String query = String.format("INSERT INTO %s (title, description, status) VALUES ('%s', '%s', %b);", table_name, title, description, status);
+                statement = connect.createStatement();
+                statement.executeUpdate(query);
+                System.out.println("Row Inserted.");
+            } catch (Exception e){ e.printStackTrace(); }
+        }
+        else { System.out.println("Неккоректые значения."); }
     }
     private boolean isValidTitle(String title) {
-        return title != null && !title.isEmpty() && title.length() <= 55;
+        return title != null && !title.isEmpty() && title.length() <= 15; // sql...
     }
-
     private boolean isValidDescription(String description) {
-        return description != null && description.length() <= 3000;
+        return description != null && description.length() <= 50; // sql...
     }
 
     public void read_data(Connection connect, String table_name){
@@ -56,67 +49,62 @@ public class DatabaseConnector {
         try {
             String query = String.format("select * from %s",table_name);
             statement = connect.createStatement();
-            rs=statement.executeQuery(query);
+            rs = statement.executeQuery(query);
             while(rs.next()){
                 System.out.print(rs.getString("id")+" ");
                 System.out.print(rs.getString("title")+" ");
                 System.out.print(rs.getString("description")+" ");
                 System.out.println(rs.getBoolean("status")+" ");
             }
-
         }
-        catch (Exception e){
-            System.out.println(e);
-        }
+        catch (Exception e){ e.printStackTrace(); }
     }
 
-    public void update_title(Connection connect, String table_name, String old_title, String new_title){
+    public void update_title(Connection connect, String table_name, int taskId, String new_title) {
         Statement statement;
-        if (isValidTitle(old_title) && isValidTitle(new_title)) {
-        try {
-            String query = String.format("update %s set title='%s' where title='%s'",table_name,new_title,old_title);
-            statement = connect.createStatement();
-            statement.executeUpdate(query);
-            System.out.print("Data Updated *Title Updated");
-        } catch (Exception e) {
-            System.out.println(e);
-        } }
-        else {
-            System.out.println("Invalid data provided for update.");
+        if (isValidTitle(new_title)) {
+            try {
+                String query = String.format("update %s set title='%s' where id=%d", table_name, new_title, taskId);
+                statement = connect.createStatement();
+                statement.executeUpdate(query);
+                System.out.print("Data Updated *Title Updated");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Некорректные значения.");
         }
     }
 
-    public void update_description(Connection connect, String table_name, String old_description, String new_description){
+    public void update_description(Connection connect, String table_name, int taskId, String new_description) {
         Statement statement;
-        if (isValidDescription(old_description) && isValidDescription(new_description)) {
-        try {
-            String query = String.format("update %s set description='%s' where description='%s'",table_name,new_description,old_description);
-            statement = connect.createStatement();
-            statement.executeUpdate(query);
-            System.out.println("Data Updated *Description Updated");
-        } catch (Exception e) {
-            System.out.println(e);
-        } }
-        else {
-            System.out.println("Invalid data provided for update.");
+        if (isValidDescription(new_description)) {
+            try {
+                String query = String.format("update %s set description='%s' where id=%d", table_name, new_description, taskId);
+                statement = connect.createStatement();
+                statement.executeUpdate(query);
+                System.out.println("Data Updated *Description Updated");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Некорректные значения.");
         }
     }
 
 
+    // DELETION
     public void delete_row_by_id(Connection connect,String table_name, int id){
         Statement statement;
         if (id > 0) {
-        try{
-            String query=String.format("delete from %s where id= %s",table_name,id);
-            statement = connect.createStatement();
-            statement.executeUpdate(query);
-            System.out.println("Data Deleted");
-        } catch (Exception e) {
-            System.out.println(e);
-        } }
-        else {
-            System.out.println("Invalid data provided for deletion.");
+            try{
+                String query=String.format("delete from %s where id= %s",table_name,id);
+                statement = connect.createStatement();
+                statement.executeUpdate(query);
+                System.out.println("Data Deleted");
+            } catch (Exception e){ e.printStackTrace(); }
         }
+        else { System.out.println("Неккоректые значения."); }
     }
 
     public void delete_table(Connection connect, String table_name){
@@ -126,8 +114,6 @@ public class DatabaseConnector {
             statement=connect.createStatement();
             statement.executeUpdate(query);
             System.out.println("Table Deleted");
-        }catch (Exception e){
-            System.out.println(e);
-        }
+        } catch (Exception e){ e.printStackTrace(); }
     }
 }
