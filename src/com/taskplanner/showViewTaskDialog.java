@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +24,24 @@ public class showViewTaskDialog {
         taskStage.setWidth(516);
         taskStage.setHeight(516);
 
+        Button viewAllTaskButton = new Button("Все задачи");
+        Button viewCurrentTaskButton = new Button("Текущие");
+        Button viewPastTaskButton = new Button("Прошедшие");
+        Button viewFutureTaskButton = new Button("Будущие");
+        viewAllTaskButton.setLayoutX(12.0);
+        viewAllTaskButton.setLayoutY(48.0);
+        viewCurrentTaskButton.setLayoutX(100.0);
+        viewCurrentTaskButton.setLayoutY(48.0);
+        viewPastTaskButton.setLayoutX(188.0);
+        viewPastTaskButton.setLayoutY(48.0);
+        viewFutureTaskButton.setLayoutX(276.0);
+        viewFutureTaskButton.setLayoutY(48.0);
+        Group buttonGroup = new Group(viewAllTaskButton, viewCurrentTaskButton, viewPastTaskButton, viewFutureTaskButton);
+
         TableView<Task> tableTaskView = new TableView<>();
         tableTaskView.setLayoutX(12.0);
-        tableTaskView.setLayoutY(62.0);
-        tableTaskView.setPrefWidth(450.0);
+        tableTaskView.setLayoutY(112.0);
+        tableTaskView.setPrefWidth(500.0);
         tableTaskView.setPrefHeight(300.0);
 
         TableColumn<Task, Integer> idColumn = new TableColumn<>("№");
@@ -64,19 +79,39 @@ public class showViewTaskDialog {
 
         tableTaskView.setOnMousePressed(event -> {
             if (event.isSecondaryButtonDown()) {
-                // Если нажата правая кнопка мыши, отобразите контекстное меню
                 showContextMenu(tableTaskView, event.getScreenX(), event.getScreenY());
             }
         });
 
         Label label = new Label("Task List:");
-        label.setLayoutX(14.0);
-        label.setLayoutY(18.0);
+        label.setLayoutX(12.0);
+        label.setLayoutY(10.0);
 
         ObservableList<Task> taskList = FXCollections.observableArrayList(fetchTasksFromDatabase(connection));
 
+        viewAllTaskButton.setOnAction(event -> {
+            ObservableList<Task> allTaskList = FXCollections.observableArrayList(fetchTasksFromDatabase(connection));
+            tableTaskView.setItems(allTaskList);
+        });
+
+        viewCurrentTaskButton.setOnAction(event -> {
+            ObservableList<Task> currentTasks = filterTasksByDate(taskList, LocalDate.now());
+            tableTaskView.setItems(currentTasks);
+        });
+
+        viewPastTaskButton.setOnAction(event -> {
+            ObservableList<Task> pastTasks = filterPastTasksByDate(taskList, LocalDate.now().minusDays(1));
+            tableTaskView.setItems(pastTasks);
+        });
+
+// Обработчик нажатия на кнопку "Будущие"
+        viewFutureTaskButton.setOnAction(event -> {
+            ObservableList<Task> futureTasks = filterTasksByDate(taskList, LocalDate.now().plusDays(1));
+            tableTaskView.setItems(futureTasks);
+        });
+
         tableTaskView.setItems(taskList);
-        Group taskGroup = new Group(tableTaskView, label);
+        Group taskGroup = new Group(tableTaskView, label, buttonGroup);
         Scene taskScene = new Scene(taskGroup, 600, 400);
         taskStage.setScene(taskScene);
 
@@ -118,6 +153,28 @@ public class showViewTaskDialog {
         }
 
         return taskList;
+    }
+
+    private ObservableList<Task> filterTasksByDate(ObservableList<Task> taskList, LocalDate date) {
+        return taskList.filtered(task -> {
+            Timestamp dueDate = task.getDueDate();
+            if (dueDate == null) {
+                return false;
+            }
+            LocalDate taskDueDate = dueDate.toLocalDateTime().toLocalDate();
+            return taskDueDate.equals(date);
+        });
+    }
+
+    private ObservableList<Task> filterPastTasksByDate(ObservableList<Task> taskList, LocalDate date) {
+        return taskList.filtered(task -> {
+            Timestamp dueDate = task.getDueDate();
+            if (dueDate == null) {
+                return false;
+            }
+            LocalDate taskDueDate = dueDate.toLocalDateTime().toLocalDate();
+            return taskDueDate.isBefore(date);
+        });
     }
 
     private void showContextMenu(TableView<Task> tableView, double x, double y) {
