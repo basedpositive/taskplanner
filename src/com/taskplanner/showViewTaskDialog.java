@@ -106,7 +106,7 @@ public class showViewTaskDialog {
 
 // Обработчик нажатия на кнопку "Будущие"
         viewFutureTaskButton.setOnAction(event -> {
-            ObservableList<Task> futureTasks = filterTasksByDate(taskList, LocalDate.now().plusDays(1));
+            ObservableList<Task> futureTasks = filterFutureTasksByDate(taskList, LocalDate.now().plusDays(1));
             tableTaskView.setItems(futureTasks);
         });
 
@@ -174,6 +174,16 @@ public class showViewTaskDialog {
             }
             LocalDate taskDueDate = dueDate.toLocalDateTime().toLocalDate();
             return taskDueDate.isBefore(date);
+        });
+    }
+    private ObservableList<Task> filterFutureTasksByDate(ObservableList<Task> taskList, LocalDate date) {
+        return taskList.filtered(task -> {
+            Timestamp dueDate = task.getDueDate();
+            if (dueDate == null) {
+                return false;
+            }
+            LocalDate taskDueDate = dueDate.toLocalDateTime().toLocalDate();
+            return taskDueDate.isAfter(date);
         });
     }
 

@@ -47,6 +47,18 @@ public class DatabaseConnector {
         }
     }
 
+    public void insert_registration_row(Connection connect, String table_name, String userName, String userPassword) {
+        Statement statement;
+        try {
+            String query = String.format("INSERT INTO %s (username, password) VALUES ('%s', '%s')", table_name, userName, userPassword);
+            statement = connect.createStatement();
+            statement.executeUpdate(query);
+            System.out.println("User Inserted.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private boolean isValidTitle(String title) {
         return title != null && !title.isEmpty() && title.length() <= 15; // sql...
     }

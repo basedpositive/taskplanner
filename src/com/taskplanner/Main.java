@@ -26,14 +26,11 @@ public class Main extends Application{
     @Override
     public void start(Stage stage) {
 
-        Text text = new Text("CREATE");
-        text.setLayoutY(158);
-        text.setLayoutX(228);
-
         Button createTaskButton = new Button("Создать задачу");
         Button viewTaskButton = new Button("Посмотреть задачи");
+        Button signInButton = new Button("SIGN UP");
 
-        Group buttonGroup = new Group(createTaskButton, viewTaskButton);
+        Group buttonGroup = new Group(createTaskButton, viewTaskButton, signInButton);
 
         createTaskButton.setLayoutX(90);
         createTaskButton.setLayoutY(320);
@@ -41,12 +38,17 @@ public class Main extends Application{
         viewTaskButton.setLayoutX(290);
         viewTaskButton.setLayoutY(320);
 
-        Group group = new Group(text, buttonGroup);
+        signInButton.setLayoutY(158);
+        signInButton.setLayoutX(218);
+
+        Group group = new Group(buttonGroup);
 
         DatabaseConnector db = new DatabaseConnector();
         final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
         createTaskButton.setOnAction(e -> new showCreateTaskDialog(connect));
         viewTaskButton.setOnAction(e -> new showViewTaskDialog(connect));
+
+        signInButton.setOnAction(e -> new showSignInTaskDialog(connect));
 
         Scene scene = new Scene(group);
         stage.setScene(scene);

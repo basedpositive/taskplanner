@@ -1,8 +1,17 @@
-CREATE TABLE IF NOT EXISTS Task (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    status VARCHAR(20) NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    dueDate TIMESTAMP
+CREATE TABLE users (
+	user_id SERIAL PRIMARY KEY,
+	username VARCHAR(255) NOT NULL UNIQUE,
+	password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE roles (
+	role_id SERIAL PRIMARY KEY,
+	role_name VARCHAR(50) NOT NULL UNIQUE
+);
+INSERT INTO roles (role_name) VALUES ('admin'), ('user');
+
+CREATE TABLE user_role (
+	user_role_id SERIAL PRIMARY KEY,
+	user_id INT REFERENCES users(user_id),
+	role_id INT REFERENCES roles(role_id)
 );
