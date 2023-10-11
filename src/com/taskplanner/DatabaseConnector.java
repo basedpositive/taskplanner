@@ -1,5 +1,7 @@
 package com.taskplanner;
 
+import javafx.scene.control.Alert;
+
 import java.sql.*;
 
 public class DatabaseConnector {
@@ -44,15 +46,47 @@ public class DatabaseConnector {
             }
         } else {
             System.out.println("Некорректные значения.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка создания задачи.");
+            alert.setHeaderText("Title <= 15, description <= 50.");
+            alert.showAndWait();
         }
     }
 
     public void insert_registration_row(Connection connect, String table_name, String userName, String userPassword) {
-        Statement statement;
         try {
-            String query = String.format("INSERT INTO %s (username, password) VALUES ('%s', '%s')", table_name, userName, userPassword);
-            statement = connect.createStatement();
-            statement.executeUpdate(query);
+            String query = String.format("INSERT INTO %s (username, password) VALUES (?, ?)", table_name);
+            PreparedStatement insertUserStatement = connect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            insertUserStatement.setString(1, userName);
+            insertUserStatement.setString(2, userPassword);
+
+            int affectedRows = insertUserStatement.executeUpdate();
+            if (affectedRows == 0) {
+                System.out.println("Создание пользователя провалена.");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Регистрация провалена.");
+                alert.setHeaderText("Некорректные значения.");
+                alert.showAndWait();
+            }
+
+            ResultSet generatedKeys = insertUserStatement.getGeneratedKeys();
+            int user_id = -1;
+            if (generatedKeys.next()) {
+                user_id = generatedKeys.getInt(1);
+            } else {
+                System.out.println("Регистрация провалена.");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Регистрация провалена.");
+                alert.setHeaderText("Некорректные значения.");
+                alert.showAndWait();
+            }
+
+            String giveRoleQuery = "insert into user_role(user_id, role_id) values(?, ?)";
+            PreparedStatement giveRoleStatement = connect.prepareStatement(giveRoleQuery);
+            giveRoleStatement.setInt(1, user_id);
+            giveRoleStatement.setInt(2, 2);
+            giveRoleStatement.executeUpdate();
+
             System.out.println("User Inserted.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,10 +94,10 @@ public class DatabaseConnector {
     }
 
     private boolean isValidTitle(String title) {
-        return title != null && !title.isEmpty() && title.length() <= 15; // sql...
+        return title != null && !title.isEmpty() && title.length() <= 15;
     }
     private boolean isValidDescription(String description) {
-        return description != null && description.length() <= 50; // sql...
+        return description != null && description.length() <= 50;
     }
 
     public void read_data(Connection connect, String table_name){
@@ -96,6 +130,10 @@ public class DatabaseConnector {
             }
         } else {
             System.out.println("Некорректные значения.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка создания задачи.");
+            alert.setHeaderText("Title <= 15, description <= 50.");
+            alert.showAndWait();
         }
     }
 
@@ -112,6 +150,10 @@ public class DatabaseConnector {
             }
         } else {
             System.out.println("Некорректные значения.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка создания задачи.");
+            alert.setHeaderText("Title <= 15, description <= 50.");
+            alert.showAndWait();
         }
     }
 

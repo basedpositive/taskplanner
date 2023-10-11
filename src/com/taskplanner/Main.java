@@ -1,7 +1,9 @@
 package com.taskplanner;
 
 import javafx.application.Application;
-import javafx.scene.control.Button;
+import javafx.application.Platform;
+import javafx.scene.control.*;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
@@ -24,38 +26,75 @@ public class Main extends Application{
     }
 
     @Override
-    public void start(Stage stage) {
-
-        Button createTaskButton = new Button("Создать задачу");
-        Button viewTaskButton = new Button("Посмотреть задачи");
-        Button signInButton = new Button("SIGN UP");
-
-        Group buttonGroup = new Group(createTaskButton, viewTaskButton, signInButton);
-
-        createTaskButton.setLayoutX(90);
-        createTaskButton.setLayoutY(320);
-
-        viewTaskButton.setLayoutX(290);
-        viewTaskButton.setLayoutY(320);
-
-        signInButton.setLayoutY(158);
-        signInButton.setLayoutX(218);
-
-        Group group = new Group(buttonGroup);
-
+    public void start(Stage signInStage) {
         DatabaseConnector db = new DatabaseConnector();
         final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
-        createTaskButton.setOnAction(e -> new showCreateTaskDialog(connect));
-        viewTaskButton.setOnAction(e -> new showViewTaskDialog(connect));
 
-        signInButton.setOnAction(e -> new showSignInTaskDialog(connect));
+        Label labelLogin = new Label("SIGN IN");
+        labelLogin.setLayoutX(12);
+        labelLogin.setLayoutY(10);
+
+        Text textUsername = new Text("Username");
+        textUsername.setLayoutX(100);
+        textUsername.setLayoutY(100);
+        TextField usernameField = new TextField();
+        usernameField.setLayoutX(180);
+        usernameField.setLayoutY(85);
+
+        Text textPassword = new Text("Password");
+        textPassword.setLayoutX(100);
+        textPassword.setLayoutY(160);
+        PasswordField passwordField = new PasswordField();
+        passwordField.setLayoutX(180);
+        passwordField.setLayoutY(145);
+
+        Button signInButton = new Button("SIGN IN");
+        signInButton.setLayoutX(180);
+        signInButton.setLayoutY(190);
+
+        Label signUpLabel = new Label("Регистрация.");
+        signUpLabel.setLayoutX(180);
+        signUpLabel.setLayoutY(220);
+        signUpLabel.setOnMouseClicked(e -> new openSignUpWindow(connect));
+
+        signInButton.setOnAction(event -> {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+
+            try {
+                String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+                try (PreparedStatement preparedStatement = connect.prepareStatement(sql)) {
+                    preparedStatement.setString(1, username);
+                    preparedStatement.setString(2, password);
+
+                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                        if (resultSet.next()) {
+
+                            signInStage.close();
+                            new showFuncWindow(connect);
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Ошибка входа");
+                            alert.setHeaderText("Неверное имя пользователя или пароль.");
+                            alert.showAndWait();
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Group fieldGroup = new Group(labelLogin, textUsername, usernameField, textPassword, passwordField, signInButton, signUpLabel);
+        Group group = new Group(fieldGroup);
 
         Scene scene = new Scene(group);
-        stage.setScene(scene);
-        stage.setTitle("Task Manager");
-        stage.setWidth(516);
-        stage.setHeight(516);
-        stage.setResizable(false);
-        stage.show();
+        signInStage.setScene(scene);
+        signInStage.setTitle("Task Manager");
+        signInStage.setWidth(516);
+        signInStage.setHeight(516);
+        signInStage.setResizable(false);
+        signInStage.show();
     }
 }

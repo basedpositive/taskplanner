@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f068be34-0dd5-473b-aefe-e3ec81ac8241" name="Changes" comment="4th week, +all, current, future buttons.">
+    <list default="true" id="f068be34-0dd5-473b-aefe-e3ec81ac8241" name="Changes" comment="5th week">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taskplanner/DatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/DatabaseConnector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taskplanner/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/taskplanner/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/taskplanner/showViewTaskDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/taskplanner/showViewTaskDialog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +183,14 @@
       <option name="project" value="LOCAL" />
       <updated>1696222706783</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="5th week">
+      <created>1696413976626</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1696413976626</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -194,6 +200,7 @@
     <MESSAGE value="3st week, +validation, crud" />
     <MESSAGE value="Fix dueDate, createdAt and status. *Без добавления их в edit." />
     <MESSAGE value="4th week, +all, current, future buttons." />
-    <option name="LAST_COMMIT_MESSAGE" value="4th week, +all, current, future buttons." />
+    <MESSAGE value="5th week" />
+    <option name="LAST_COMMIT_MESSAGE" value="5th week" />
   </component>
 </project>
