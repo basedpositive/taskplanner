@@ -29,31 +29,39 @@ public class openSignUpWindow {
         labelLogin.setLayoutX(12);
         labelLogin.setLayoutY(10);
 
+        Text textEmail = new Text("Email");
+        textEmail.setLayoutX(100);
+        textEmail.setLayoutY(100);
+        TextField emailField = new TextField();
+        emailField.setLayoutX(180);
+        emailField.setLayoutY(85);
+
         Text textUsername = new Text("Username");
         textUsername.setLayoutX(100);
-        textUsername.setLayoutY(100);
+        textUsername.setLayoutY(160);
         TextField usernameField = new TextField();
         usernameField.setLayoutX(180);
-        usernameField.setLayoutY(85);
+        usernameField.setLayoutY(145);
 
         Text textPassword = new Text("Password");
         textPassword.setLayoutX(100);
-        textPassword.setLayoutY(160);
+        textPassword.setLayoutY(203);
         PasswordField passwordField = new PasswordField ();
         passwordField.setLayoutX(180);
-        passwordField.setLayoutY(145);
+        passwordField.setLayoutY(185);
 
         Button signUpButton = new Button("SIGN UP");
         signUpButton.setLayoutX(180);
-        signUpButton.setLayoutY(190);
+        signUpButton.setLayoutY(235);
         signUpButton.setOnAction(e -> {
+            String email = emailField.getText();
             String username = usernameField.getText();
             String password = passwordField.getText();
 
-            db.insert_registration_row(connection, "users", username, password);
+            db.insert_registration_row(connection, "users", email, username, password);
         });
 
-        Group testGroup = new Group(labelLogin, textUsername, usernameField, textPassword, passwordField, signUpButton);
+        Group testGroup = new Group(labelLogin, textEmail, emailField, textUsername, usernameField, textPassword, passwordField, signUpButton);
 
         signInLayout.getChildren().addAll(testGroup);
 

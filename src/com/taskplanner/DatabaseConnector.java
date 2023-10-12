@@ -53,12 +53,13 @@ public class DatabaseConnector {
         }
     }
 
-    public void insert_registration_row(Connection connect, String table_name, String userName, String userPassword) {
+    public void insert_registration_row(Connection connect, String table_name, String userEmail, String userName, String userPassword) {
         try {
-            String query = String.format("INSERT INTO %s (username, password) VALUES (?, ?)", table_name);
+            String query = String.format("INSERT INTO %s (email, username, password) VALUES (?, ?, ?)", table_name);
             PreparedStatement insertUserStatement = connect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            insertUserStatement.setString(1, userName);
-            insertUserStatement.setString(2, userPassword);
+            insertUserStatement.setString(1, userEmail);
+            insertUserStatement.setString(2, userName);
+            insertUserStatement.setString(3, userPassword);
 
             int affectedRows = insertUserStatement.executeUpdate();
             if (affectedRows == 0) {
