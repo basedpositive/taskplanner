@@ -2,7 +2,12 @@ package com.taskplanner;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Orientation;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -10,7 +15,8 @@ import javafx.scene.Group;
 import javafx.scene.text.Text;
 import java.sql.*;
 
-public class Main extends Application{
+public class Main extends Application {
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         // DatabaseConnector db = new DatabaseConnector();
@@ -26,40 +32,77 @@ public class Main extends Application{
     }
 
     @Override
-    public void start(Stage signInStage) {
-        DatabaseConnector db = new DatabaseConnector();
-        final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
+    public void start(Stage primaryStage) {
 
-        Label labelLogin = new Label("SIGN IN");
-        labelLogin.setLayoutX(12);
-        labelLogin.setLayoutY(10);
+        DatabaseConnector db = new DatabaseConnector();
+        final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277"); // connect mozhno vverh
+
+        primaryStage.setTitle("Task Manager");
+
+        Group root = new Group();
+        Scene signInScene = new Scene(root, 1247, 558, Color.WHITE);
+
+        SplitPane splitPane = new SplitPane();
+        splitPane.setPrefSize(1247, 558);
+        splitPane.setOrientation(Orientation.HORIZONTAL);
+        splitPane.setDividerPosition(0, 0.3);
+
+        BorderPane leftPane = new BorderPane();
+        leftPane.setMinWidth(370);
+        leftPane.setMaxWidth(370);
+        BorderPane rightPane = new BorderPane();
+        splitPane.getItems().addAll(leftPane, rightPane);
+
+
+        Text textLogin = new Text("Sign in");
+        textLogin.setLayoutX(47);
+        textLogin.setLayoutY(104);
+        textLogin.setStyle("-fx-font: 38 arial;");
 
         Text textUsername = new Text("Username");
-        textUsername.setLayoutX(100);
-        textUsername.setLayoutY(100);
+        textUsername.setLayoutX(47);
+        textUsername.setLayoutY(168);
         TextField usernameField = new TextField();
-        usernameField.setLayoutX(180);
-        usernameField.setLayoutY(85);
+        usernameField.setLayoutX(111);
+        usernameField.setLayoutY(151);
 
         Text textPassword = new Text("Password");
-        textPassword.setLayoutX(100);
-        textPassword.setLayoutY(160);
+        textPassword.setLayoutX(47);
+        textPassword.setLayoutY(218);
         PasswordField passwordField = new PasswordField();
-        passwordField.setLayoutX(180);
-        passwordField.setLayoutY(145);
+        passwordField.setLayoutX(111);
+        passwordField.setLayoutY(201);
 
         Button signInButton = new Button("SIGN IN");
-        signInButton.setLayoutX(180);
-        signInButton.setLayoutY(190);
+        signInButton.setLayoutX(151);
+        signInButton.setLayoutY(267);
+        signInButton.setStyle("-fx-background-color: #4a90e2; " +
+                "-fx-text-fill: white; -fx-font-size: 14px; " +
+                "-fx-padding: 5 10; " +
+                "-fx-background-radius: 5; -fx-border-radius: 5");
 
-        Label signUpLabel = new Label("Регистрация.");
-        signUpLabel.setLayoutX(180);
-        signUpLabel.setLayoutY(220);
-        signUpLabel.setOnMouseClicked(e -> new openSignUpWindow(connect));
+        Label signUpText = new Label("CREATE ACCOUNT >>>");
+        signUpText.setLayoutX(125);
+        signUpText.setLayoutY(323);
+        signUpText.setStyle("-fx-font: 12 arial");
 
+        signUpText.setOnMouseEntered(event -> signUpText.setStyle("-fx-font: 12 arial; -fx-text-fill: #357ae8"));
+        signUpText.setOnMouseExited(event -> signUpText.setStyle("-fx-font: 12 arial"));
+        signUpText.setOnMouseClicked(event -> new openSignUpWindow(connect, primaryStage));
+
+        signInButton.setOnMouseEntered(event -> signInButton.setStyle("-fx-background-color: #357ae8; " + "-fx-text-fill: white; -fx-font-size: 14px; " + "-fx-padding: 5 10; " + "-fx-background-radius: 5; -fx-border-radius: 5"));
+        signInButton.setOnMouseExited(event -> signInButton.setStyle("-fx-background-color: #4a90e2; " + "-fx-text-fill: white; -fx-font-size: 14px; " + "-fx-padding: 5 10; " + "-fx-background-radius: 5; -fx-border-radius: 5"));
         signInButton.setOnAction(event -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
+
+            if (username.isEmpty() || password.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Ошибка входа");
+                alert.setHeaderText("Имя пользователя и пароль не могут быть пустыми.");
+                alert.showAndWait();
+                return;
+            }
 
             try {
                 String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -71,8 +114,8 @@ public class Main extends Application{
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         if (resultSet.next()) {
 
-                            signInStage.close();
-                            new showFuncWindow(connect);
+                            primaryStage.close();
+                            new showFuncWindow(connect, primaryStage);
                         } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Ошибка входа");
@@ -86,15 +129,11 @@ public class Main extends Application{
             }
         });
 
-        Group fieldGroup = new Group(labelLogin, textUsername, usernameField, textPassword, passwordField, signInButton, signUpLabel);
-        Group group = new Group(fieldGroup);
+        Group elementsGroup = new Group(textLogin, textUsername, usernameField, textPassword, passwordField, signInButton, signUpText);
 
-        Scene scene = new Scene(group);
-        signInStage.setScene(scene);
-        signInStage.setTitle("Task Manager");
-        signInStage.setWidth(516);
-        signInStage.setHeight(516);
-        signInStage.setResizable(false);
-        signInStage.show();
+        root.getChildren().addAll(splitPane, elementsGroup);
+        primaryStage.setScene(signInScene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 }

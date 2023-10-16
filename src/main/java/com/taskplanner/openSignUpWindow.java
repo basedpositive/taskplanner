@@ -1,9 +1,13 @@
 package com.taskplanner;
 
+import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -17,46 +21,72 @@ import java.util.regex.Pattern;
 
 public class openSignUpWindow {
 
-    public openSignUpWindow(Connection connection) {
+    public openSignUpWindow(Connection connection, Stage primaryStage) {
         DatabaseConnector db = new DatabaseConnector();
+        Main main = new Main();
+        final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
 
-        Stage signInStage = new Stage();
-        signInStage.setTitle("Регистрация");
+        primaryStage.setTitle("Регистрация");
 
-        VBox signInLayout = new VBox();
-        signInLayout.setSpacing(10);
+        Group root = new Group();
+        Scene signUpScene = new Scene(root, 1247, 558, Color.WHITE);
 
-        Scene signInScene = new Scene(signInLayout, 516, 516);
-        signInStage.setScene(signInScene);
+        SplitPane splitPane = new SplitPane();
+        splitPane.setPrefSize(1247, 558);
+        splitPane.setOrientation(Orientation.HORIZONTAL);
+        splitPane.setDividerPosition(0, 0.3);
 
-        Label labelLogin = new Label("SIGN UP");
-        labelLogin.setLayoutX(12);
-        labelLogin.setLayoutY(10);
+        BorderPane leftPane = new BorderPane();
+        leftPane.setMinWidth(370);
+        leftPane.setMaxWidth(370);
+        BorderPane rightPane = new BorderPane();
+        splitPane.getItems().addAll(leftPane, rightPane);
+
+        Text textReg = new Text("Sign up");
+        textReg.setLayoutX(47);
+        textReg.setLayoutY(104);
+        textReg.setStyle("-fx-font: 38 arial;");
 
         Text textEmail = new Text("Email");
-        textEmail.setLayoutX(100);
-        textEmail.setLayoutY(100);
+        textEmail.setLayoutX(47);
+        textEmail.setLayoutY(184);
         TextField emailField = new TextField();
-        emailField.setLayoutX(180);
-        emailField.setLayoutY(85);
+        emailField.setLayoutX(111);
+        emailField.setLayoutY(167);
 
         Text textUsername = new Text("Username");
-        textUsername.setLayoutX(100);
-        textUsername.setLayoutY(160);
+        textUsername.setLayoutX(47);
+        textUsername.setLayoutY(232);
         TextField usernameField = new TextField();
-        usernameField.setLayoutX(180);
-        usernameField.setLayoutY(145);
+        usernameField.setLayoutX(111);
+        usernameField.setLayoutY(215);
 
         Text textPassword = new Text("Password");
-        textPassword.setLayoutX(100);
-        textPassword.setLayoutY(203);
-        PasswordField passwordField = new PasswordField ();
-        passwordField.setLayoutX(180);
-        passwordField.setLayoutY(185);
+        textPassword.setLayoutX(47);
+        textPassword.setLayoutY(282);
+        PasswordField passwordField = new PasswordField();
+        passwordField.setLayoutX(111);
+        passwordField.setLayoutY(265);
 
         Button signUpButton = new Button("SIGN UP");
-        signUpButton.setLayoutX(180);
-        signUpButton.setLayoutY(235);
+        signUpButton.setLayoutX(151);
+        signUpButton.setLayoutY(331);
+        signUpButton.setStyle("-fx-background-color: #4a90e2; " +
+                "-fx-text-fill: white; -fx-font-size: 14px; " +
+                "-fx-padding: 5 10; " +
+                "-fx-background-radius: 5; -fx-border-radius: 5");
+
+        Label backText = new Label("<<< BACK");
+        backText.setLayoutX(157);
+        backText.setLayoutY(387);
+        backText.setStyle("-fx-font: 12 arial");
+
+        backText.setOnMouseEntered(event -> backText.setStyle("-fx-font: 12 arial; -fx-text-fill: #357ae8"));
+        backText.setOnMouseExited(event -> backText.setStyle("-fx-font: 12 arial"));
+        backText.setOnMouseClicked(event -> main.start(primaryStage));
+
+        signUpButton.setOnMouseEntered(event -> signUpButton.setStyle("-fx-background-color: #357ae8; " + "-fx-text-fill: white; -fx-font-size: 14px; " + "-fx-padding: 5 10; " + "-fx-background-radius: 5; -fx-border-radius: 5"));
+        signUpButton.setOnMouseExited(event -> signUpButton.setStyle("-fx-background-color: #4a90e2; " + "-fx-text-fill: white; -fx-font-size: 14px; " + "-fx-padding: 5 10; " + "-fx-background-radius: 5; -fx-border-radius: 5"));
         signUpButton.setOnAction(e -> {
             String email = emailField.getText();
             String username = usernameField.getText();
@@ -78,11 +108,12 @@ public class openSignUpWindow {
             }
         });
 
-        Group testGroup = new Group(labelLogin, textEmail, emailField, textUsername, usernameField, textPassword, passwordField, signUpButton);
+        Group elementsGroup = new Group(textReg, textEmail, emailField, textUsername, usernameField, textPassword, passwordField, signUpButton, backText);
 
-        signInLayout.getChildren().addAll(testGroup);
-
-        signInStage.show();
+        root.getChildren().addAll(splitPane, elementsGroup);
+        primaryStage.setScene(signUpScene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
     private void sendWelcomeEmail(String username, String email) {
@@ -115,6 +146,7 @@ public class openSignUpWindow {
 
             Transport.send(message);
             System.out.println("Приветственное письмо отправлено успешно.");
+
         } catch (MessagingException e) {
             e.printStackTrace();
             System.err.println("Ошибка при отправке приветственного письма: " + e.getMessage());

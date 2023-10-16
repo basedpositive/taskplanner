@@ -2,10 +2,13 @@ package com.taskplanner;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.sql.*;
@@ -16,33 +19,50 @@ import java.util.List;
 public class showViewTaskDialog {
     private ContextMenu contextMenu;
 
-    protected showViewTaskDialog(Connection connection) {
+    protected showViewTaskDialog(Connection connection, Stage primaryStage) {
 
-        Stage taskStage = new Stage();
-        taskStage.setTitle("Список задач");
+        DatabaseConnector db = new DatabaseConnector();
+        Main main = new Main();
+        final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
 
-        taskStage.setWidth(516);
-        taskStage.setHeight(516);
+        primaryStage.setTitle("Регистрация");
+
+        Group root = new Group();
+        Scene signUpScene = new Scene(root, 1247, 558, Color.WHITE);
+
+        SplitPane splitPane = new SplitPane();
+        splitPane.setPrefSize(1247, 558);
+        splitPane.setOrientation(Orientation.HORIZONTAL);
+        splitPane.setDividerPosition(0, 0.3);
+
+        BorderPane leftPane = new BorderPane();
+        leftPane.setMinWidth(370);
+        leftPane.setMaxWidth(370);
+        BorderPane rightPane = new BorderPane();
+        splitPane.getItems().addAll(leftPane, rightPane);
 
         Button viewAllTaskButton = new Button("Все задачи");
         Button viewCurrentTaskButton = new Button("Текущие");
         Button viewPastTaskButton = new Button("Прошедшие");
         Button viewFutureTaskButton = new Button("Будущие");
-        viewAllTaskButton.setLayoutX(12.0);
-        viewAllTaskButton.setLayoutY(48.0);
-        viewCurrentTaskButton.setLayoutX(100.0);
-        viewCurrentTaskButton.setLayoutY(48.0);
-        viewPastTaskButton.setLayoutX(188.0);
-        viewPastTaskButton.setLayoutY(48.0);
-        viewFutureTaskButton.setLayoutX(276.0);
-        viewFutureTaskButton.setLayoutY(48.0);
+        viewAllTaskButton.setLayoutX(380);
+        viewAllTaskButton.setLayoutY(25);
+
+        viewCurrentTaskButton.setLayoutX(494);
+        viewCurrentTaskButton.setLayoutY(25);
+
+        viewPastTaskButton.setLayoutX(571);
+        viewPastTaskButton.setLayoutY(25);
+
+        viewFutureTaskButton.setLayoutX(668);
+        viewFutureTaskButton.setLayoutY(25);
         Group buttonGroup = new Group(viewAllTaskButton, viewCurrentTaskButton, viewPastTaskButton, viewFutureTaskButton);
 
         TableView<Task> tableTaskView = new TableView<>();
-        tableTaskView.setLayoutX(12.0);
-        tableTaskView.setLayoutY(112.0);
-        tableTaskView.setPrefWidth(500.0);
-        tableTaskView.setPrefHeight(300.0);
+        tableTaskView.setLayoutX(380);
+        tableTaskView.setLayoutY(63);
+        tableTaskView.setPrefWidth(862);
+        tableTaskView.setPrefHeight(484);
 
         TableColumn<Task, Integer> idColumn = new TableColumn<>("№");
         idColumn.setPrefWidth(80.0);
@@ -83,9 +103,6 @@ public class showViewTaskDialog {
             }
         });
 
-        Label label = new Label("Task List:");
-        label.setLayoutX(12.0);
-        label.setLayoutY(10.0);
 
         ObservableList<Task> taskList = FXCollections.observableArrayList(fetchTasksFromDatabase(connection));
 
@@ -104,18 +121,19 @@ public class showViewTaskDialog {
             tableTaskView.setItems(pastTasks);
         });
 
-// Обработчик нажатия на кнопку "Будущие"
         viewFutureTaskButton.setOnAction(event -> {
             ObservableList<Task> futureTasks = filterFutureTasksByDate(taskList, LocalDate.now().plusDays(1));
             tableTaskView.setItems(futureTasks);
         });
 
         tableTaskView.setItems(taskList);
-        Group taskGroup = new Group(tableTaskView, label, buttonGroup);
-        Scene taskScene = new Scene(taskGroup, 600, 400);
-        taskStage.setScene(taskScene);
 
-        taskStage.show();
+        Group elementsGroup = new Group(tableTaskView, buttonGroup);
+
+        root.getChildren().addAll(splitPane, elementsGroup);
+        primaryStage.setScene(signUpScene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
     private ObservableList<Task> fetchTasksFromDatabase(Connection connection) {
