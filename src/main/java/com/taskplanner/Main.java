@@ -1,14 +1,10 @@
 package com.taskplanner;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Orientation;
-import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;

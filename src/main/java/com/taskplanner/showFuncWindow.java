@@ -243,6 +243,7 @@ public class showFuncWindow {
                     editAndDelete.editTask(selectedTask);
                 }
             });
+
             MenuItem deleteMenuItem = new MenuItem("Удалить задачу");
             deleteMenuItem.setOnAction(event -> {
                 Task selectedTask = tableView.getSelectionModel().getSelectedItem();

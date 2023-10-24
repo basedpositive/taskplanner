@@ -12,6 +12,7 @@ public class editAndDelete {
     static void editTask(Task selectedTask) {
         DatabaseConnector db = new DatabaseConnector();
         Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
+
         Stage createTaskStage = new Stage();
         createTaskStage.setTitle("Изменить задачу");
         VBox createTaskLayout = new VBox();

@@ -38,6 +38,7 @@ public class DatabaseConnector {
         if (isValidTitle(title) && isValidDescription(description)) {
             try {
                 String query = String.format("INSERT INTO %s (title, description, status, createdAt, dueDate) VALUES ('%s', '%s', '%s', '%s', '%s');", table_name, title, description, status, createdAt, dueDate);
+
                 statement = connect.createStatement();
                 statement.executeUpdate(query);
                 System.out.println("Row Inserted.");
