@@ -75,8 +75,6 @@ public class showCreateTaskDialog {
             Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
             Timestamp dueDate = Timestamp.valueOf(dueDatePicker.getValue().atStartOfDay());
 
-            db.insert_row(connection, "task", title, description, status, createdAt, dueDate);
-
             Card card = new Card();
             card.setName(title);
             card.setDesc(description);
@@ -87,7 +85,11 @@ public class showCreateTaskDialog {
                 case "Завершено" -> trello.getList(DONELISTID);
                 default -> trello.getList(DEFLISTID);
             };
-            trelloList.createCard(card);
+            Card createdCard = trelloList.createCard(card);
+
+            String trelloCardId = createdCard.getId();
+
+            db.insert_row(connection, "task", title, description, status, createdAt, dueDate, trelloCardId);
 
             createTaskStage.close();
         });

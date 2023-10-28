@@ -170,7 +170,7 @@ public class showFuncWindow {
         ResultSet rs = null;
 
         try {
-            String query = "SELECT id, title, description, status, createdAt, dueDate FROM task";
+            String query = "SELECT id, title, description, status, createdAt, dueDate, trello_card_id FROM task";
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
 
@@ -181,7 +181,8 @@ public class showFuncWindow {
                 String status = rs.getString("status");
                 Timestamp createdAt = rs.getTimestamp("createdAt");
                 Timestamp dueDate = rs.getTimestamp("dueDate");
-                taskList.add(new Task(id, title, description, status, createdAt, dueDate));
+                String trelloCardId = rs.getString("trello_card_id");
+                taskList.add(new Task(id, title, description, status, createdAt, dueDate, trelloCardId));
             }
         } catch (Exception e) {
             e.printStackTrace();

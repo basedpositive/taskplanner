@@ -33,14 +33,17 @@ public class DatabaseConnector {
         } catch (Exception e){ e.printStackTrace(); }
     }
 
-    public void insert_row(Connection connect, String table_name, String title, String description, String status, Timestamp createdAt, Timestamp dueDate) {
-        Statement statement;
+    public void insert_row(Connection connection, String tableName, String title, String description, String status, Timestamp createdAt, Timestamp dueDate, String trelloCardId) {
         if (isValidTitle(title) && isValidDescription(description)) {
-            try {
-                String query = String.format("INSERT INTO %s (title, description, status, createdAt, dueDate) VALUES ('%s', '%s', '%s', '%s', '%s');", table_name, title, description, status, createdAt, dueDate);
-
-                statement = connect.createStatement();
-                statement.executeUpdate(query);
+            String sql = "INSERT INTO " + tableName + " (title, description, status, createdAt, dueDate, trello_card_id) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, title);
+                statement.setString(2, description);
+                statement.setString(3, status);
+                statement.setTimestamp(4, createdAt);
+                statement.setTimestamp(5, dueDate);
+                statement.setString(6, trelloCardId);
+                statement.executeUpdate();
                 System.out.println("Row Inserted.");
             } catch (Exception e) {
                 e.printStackTrace();
