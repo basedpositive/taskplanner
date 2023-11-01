@@ -1,55 +1,51 @@
 package com.taskplanner;
 
 import javafx.application.Application;
-import javafx.geometry.Orientation;
+
+// JavaFX
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.text.Text;
+
+// SQL
 import java.sql.*;
 
 public class Main extends Application {
-    private Stage primaryStage;
+
+    DatabaseConnector db = new DatabaseConnector();
+    final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
 
     public static void main(String[] args) {
-        // DatabaseConnector db = new DatabaseConnector();
-        // Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
-        // db.createTable(connect, "task");
-        // db.insert_row(connect,"task","","test length",true);
-        // db.update_title(connect,"task","Some title","Car");
-        // db.update_description(connect,"task","Some description","wash");
-        // db.delete_row_by_id(connect, "task", 14);
-        // db.read_data(connect,"task");
-
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
 
-        DatabaseConnector db = new DatabaseConnector();
-        final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277"); // connect mozhno vverh
+        primaryStage.setTitle("Task Planner");
 
-        primaryStage.setTitle("Task Manager");
-
-        Group root = new Group();
+        Group root = new Group(); // Корневой контейнер, который будет содержать все элементы, отображаемые на сцене
         Scene signInScene = new Scene(root, 1247, 558, Color.WHITE);
 
-        SplitPane splitPane = new SplitPane();
-        splitPane.setPrefSize(1247, 558);
-        splitPane.setOrientation(Orientation.HORIZONTAL);
-        splitPane.setDividerPosition(0, 0.3);
 
-        BorderPane leftPane = new BorderPane();
-        leftPane.setMinWidth(370);
-        leftPane.setMaxWidth(370);
-        BorderPane rightPane = new BorderPane();
-        splitPane.getItems().addAll(leftPane, rightPane);
+        // UI (Линий)
+        Line vLineMain = new Line();
+        vLineMain.setStroke(Paint.valueOf("#002bff"));
+        vLineMain.setLayoutX(352);
+        vLineMain.setEndY(558);
+        Line hLineMain = new Line();
+        hLineMain.setStroke(Paint.valueOf("#002bff"));
+        hLineMain.setLayoutY(1);
+        hLineMain.setEndX(1247);
+        Group groupLine = new Group(vLineMain, hLineMain);
 
 
+        // Надписи для авторизаций
         Text textLogin = new Text("Sign in");
         textLogin.setLayoutX(47);
         textLogin.setLayoutY(104);
@@ -69,6 +65,8 @@ public class Main extends Application {
         passwordField.setLayoutX(111);
         passwordField.setLayoutY(201);
 
+
+        // Кнопка входа
         Button signInButton = new Button("SIGN IN");
         signInButton.setLayoutX(151);
         signInButton.setLayoutY(267);
@@ -77,21 +75,31 @@ public class Main extends Application {
                 "-fx-padding: 5 10; " +
                 "-fx-background-radius: 5; -fx-border-radius: 5");
 
+
+        // Кликабельная надпись для регистраций
         Label signUpText = new Label("CREATE ACCOUNT >>>");
         signUpText.setLayoutX(125);
         signUpText.setLayoutY(323);
         signUpText.setStyle("-fx-font: 12 arial");
-
+            // UI
         signUpText.setOnMouseEntered(event -> signUpText.setStyle("-fx-font: 12 arial; -fx-text-fill: #357ae8"));
         signUpText.setOnMouseExited(event -> signUpText.setStyle("-fx-font: 12 arial"));
+            // Переход в страницу регистраций(openSignUpWindow)
         signUpText.setOnMouseClicked(event -> new openSignUpWindow(connect, primaryStage));
 
+
+        // Кнопка входа
+            // UI при наведениях
         signInButton.setOnMouseEntered(event -> signInButton.setStyle("-fx-background-color: #357ae8; " + "-fx-text-fill: white; -fx-font-size: 14px; " + "-fx-padding: 5 10; " + "-fx-background-radius: 5; -fx-border-radius: 5"));
         signInButton.setOnMouseExited(event -> signInButton.setStyle("-fx-background-color: #4a90e2; " + "-fx-text-fill: white; -fx-font-size: 14px; " + "-fx-padding: 5 10; " + "-fx-background-radius: 5; -fx-border-radius: 5"));
+
+        // Кнопка входа
         signInButton.setOnAction(event -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
+            // Alert
+                // Имя или пароль не должны быть пустыми
             if (username.isEmpty() || password.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Ошибка входа");
@@ -100,16 +108,20 @@ public class Main extends Application {
                 return;
             }
 
+            // Проверка имени и пароля для авторизаций
+                // sql-запрос для выборки данных из таблицы (users)
             try {
-                String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+                String query = "SELECT * FROM users WHERE username = ? AND password = ?";
 
-                try (PreparedStatement preparedStatement = connect.prepareStatement(sql)) {
+                // Подготовка sql-запроса с параметрами для поиска записей в бд
+                try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
                     preparedStatement.setString(1, username);
                     preparedStatement.setString(2, password);
 
+                    // Результат запроса
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                        // Если УСПЕШНО
                         if (resultSet.next()) {
-
                             primaryStage.close();
                             new showFuncWindow(connect, primaryStage);
                         } else {
@@ -121,13 +133,18 @@ public class Main extends Application {
                     }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(); // stackoverflow q/1486014
             }
         });
 
-        Group elementsGroup = new Group(textLogin, textUsername, usernameField, textPassword, passwordField, signInButton, signUpText);
+        Group elementsGroup = new Group(textLogin, textUsername, textPassword,
+                usernameField, passwordField,
+                signInButton, signUpText);
 
-        root.getChildren().addAll(splitPane, elementsGroup);
+        // Отображение элементов
+        root.getChildren().addAll(groupLine, elementsGroup);
+
+        // Настройка
         primaryStage.setScene(signInScene);
         primaryStage.setResizable(false);
         primaryStage.show();

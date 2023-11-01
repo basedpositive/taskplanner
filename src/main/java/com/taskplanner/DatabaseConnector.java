@@ -1,10 +1,14 @@
 package com.taskplanner;
 
 import javafx.scene.control.Alert;
-
 import java.sql.*;
 
+
+// https://github.com/abhishekmahajan98/Java_PostGreSQL-CRUD (youtube)
+
+
 public class DatabaseConnector {
+    // Подключение к бд
     public Connection connect_to_db(String dbname, String user, String pass) {
         Connection connect = null;
         try {
@@ -16,6 +20,8 @@ public class DatabaseConnector {
         return connect;
     }
 
+
+    // Создание таблицы
     public void createTable(Connection connect, String table_name){
         Statement statement;
         try{
@@ -33,6 +39,8 @@ public class DatabaseConnector {
         } catch (Exception e){ e.printStackTrace(); }
     }
 
+
+    // Добавление информации в таблицу
     public void insert_row(Connection connection, String tableName, String title, String description, String status, Timestamp createdAt, Timestamp dueDate, String trelloCardId) {
         if (isValidTitle(title) && isValidDescription(description)) {
             String sql = "INSERT INTO " + tableName + " (title, description, status, createdAt, dueDate, trello_card_id) VALUES (?, ?, ?, ?, ?, ?)";
@@ -57,6 +65,8 @@ public class DatabaseConnector {
         }
     }
 
+
+    // Добавление информации в таблицу после регистрации
     public void insert_registration_row(Connection connect, String table_name, String userEmail, String userName, String userPassword) {
         try {
             String query = String.format("INSERT INTO %s (email, username, password) VALUES (?, ?, ?)", table_name);
@@ -98,6 +108,8 @@ public class DatabaseConnector {
         }
     }
 
+
+    // Валидация названия и описания
     private boolean isValidTitle(String title) {
         return title != null && !title.isEmpty() && title.length() <= 15;
     }
@@ -105,6 +117,8 @@ public class DatabaseConnector {
         return description != null && description.length() <= 50;
     }
 
+
+    // Чтение бд
     public void read_data(Connection connect, String table_name){
         Statement statement;
         ResultSet rs = null;
@@ -122,6 +136,8 @@ public class DatabaseConnector {
         catch (Exception e){ e.printStackTrace(); }
     }
 
+
+    // Реализация изменения
     public void update_title(Connection connect, String table_name, int taskId, String new_title) {
         Statement statement;
         if (isValidTitle(new_title)) {
@@ -141,7 +157,6 @@ public class DatabaseConnector {
             alert.showAndWait();
         }
     }
-
     public void update_description(Connection connect, String table_name, int taskId, String new_description) {
         Statement statement;
         if (isValidDescription(new_description)) {
@@ -163,7 +178,7 @@ public class DatabaseConnector {
     }
 
 
-    // DELETION
+    // УДАЛЕНИЕ по id
     public void delete_row_by_id(Connection connect,String table_name, int id){
         Statement statement;
         if (id > 0) {
@@ -176,7 +191,7 @@ public class DatabaseConnector {
         }
         else { System.out.println("Неккоректые значения."); }
     }
-
+    // УДАЛЕНИЕ таблицы
     public void delete_table(Connection connect, String table_name){
         Statement statement;
         try {

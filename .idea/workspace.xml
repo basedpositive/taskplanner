@@ -4,20 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f068be34-0dd5-473b-aefe-e3ec81ac8241" name="Changes" comment="trello connect">
+    <list default="true" id="f068be34-0dd5-473b-aefe-e3ec81ac8241" name="Changes" comment="trello changes, update and delete">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/DatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/DatabaseConnector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/Task.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/editAndDelete.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/editAndDelete.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/showCreateTaskDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/showCreateTaskDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/openSignUpWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/openSignUpWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/showCreateTaskDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/showCreateTaskWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/showFuncWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/taskplanner/showFuncWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/taskplanner/showViewTaskDialog.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/DatabaseConnector.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taskplanner/DatabaseConnector.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/editAndDelete.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taskplanner/editAndDelete.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/showCreateTaskDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taskplanner/showCreateTaskDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taskplanner/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/Task.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taskplanner/Task.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/openSignUpWindow$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taskplanner/openSignUpWindow$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/openSignUpWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taskplanner/openSignUpWindow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/showCreateTaskDialog.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/showFuncWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/taskplanner/showFuncWindow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/taskplanner/showViewTaskDialog.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +28,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -52,7 +53,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2UzHP1wTKB7KTWB7uy4dNZgUWMB" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -70,7 +71,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.28610855&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -238,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698130481556</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="trello changes, update and delete">
+      <created>1698507703493</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1698507703493</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -265,6 +273,7 @@
     <MESSAGE value="6th week +email validation, +email service" />
     <MESSAGE value="ui update" />
     <MESSAGE value="trello connect" />
-    <option name="LAST_COMMIT_MESSAGE" value="trello connect" />
+    <MESSAGE value="trello changes, update and delete" />
+    <option name="LAST_COMMIT_MESSAGE" value="trello changes, update and delete" />
   </component>
 </project>

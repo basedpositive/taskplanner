@@ -1,13 +1,12 @@
 package com.taskplanner;
 
-import javafx.geometry.Orientation;
+// JavaFX
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -24,24 +23,26 @@ public class openSignUpWindow {
     public openSignUpWindow(Connection connection, Stage primaryStage) {
         DatabaseConnector db = new DatabaseConnector();
         Main main = new Main();
-        final Connection connect = db.connect_to_db("schema", "postgres", "#SHKM277");
 
         primaryStage.setTitle("Регистрация");
 
         Group root = new Group();
         Scene signUpScene = new Scene(root, 1247, 558, Color.WHITE);
 
-        SplitPane splitPane = new SplitPane();
-        splitPane.setPrefSize(1247, 558);
-        splitPane.setOrientation(Orientation.HORIZONTAL);
-        splitPane.setDividerPosition(0, 0.3);
 
-        BorderPane leftPane = new BorderPane();
-        leftPane.setMinWidth(370);
-        leftPane.setMaxWidth(370);
-        BorderPane rightPane = new BorderPane();
-        splitPane.getItems().addAll(leftPane, rightPane);
+        // UI (Линий)
+        Line vLineMain = new Line();
+        vLineMain.setStroke(Paint.valueOf("#002bff"));
+        vLineMain.setLayoutX(352);
+        vLineMain.setEndY(558);
+        Line hLineMain = new Line();
+        hLineMain.setStroke(Paint.valueOf("#002bff"));
+        hLineMain.setLayoutY(1);
+        hLineMain.setEndX(1247);
+        Group groupLine = new Group(vLineMain, hLineMain);
 
+
+        // Надписи
         Text textReg = new Text("Sign up");
         textReg.setLayoutX(47);
         textReg.setLayoutY(104);
@@ -68,6 +69,20 @@ public class openSignUpWindow {
         passwordField.setLayoutX(111);
         passwordField.setLayoutY(265);
 
+
+        // Кликабельная надпись (UI)
+        Label backText = new Label("<<< BACK");
+        backText.setLayoutX(157);
+        backText.setLayoutY(387);
+        backText.setStyle("-fx-font: 12 arial");
+            // UI при наведениях
+        backText.setOnMouseEntered(event -> backText.setStyle("-fx-font: 12 arial; -fx-text-fill: #357ae8"));
+        backText.setOnMouseExited(event -> backText.setStyle("-fx-font: 12 arial"));
+            // Возврат в (main)
+        backText.setOnMouseClicked(event -> main.start(primaryStage));
+
+
+        // Кнопка регистрации (UI)
         Button signUpButton = new Button("SIGN UP");
         signUpButton.setLayoutX(151);
         signUpButton.setLayoutY(331);
@@ -76,22 +91,16 @@ public class openSignUpWindow {
                 "-fx-padding: 5 10; " +
                 "-fx-background-radius: 5; -fx-border-radius: 5");
 
-        Label backText = new Label("<<< BACK");
-        backText.setLayoutX(157);
-        backText.setLayoutY(387);
-        backText.setStyle("-fx-font: 12 arial");
-
-        backText.setOnMouseEntered(event -> backText.setStyle("-fx-font: 12 arial; -fx-text-fill: #357ae8"));
-        backText.setOnMouseExited(event -> backText.setStyle("-fx-font: 12 arial"));
-        backText.setOnMouseClicked(event -> main.start(primaryStage));
-
+            // UI при наведениях
         signUpButton.setOnMouseEntered(event -> signUpButton.setStyle("-fx-background-color: #357ae8; " + "-fx-text-fill: white; -fx-font-size: 14px; " + "-fx-padding: 5 10; " + "-fx-background-radius: 5; -fx-border-radius: 5"));
         signUpButton.setOnMouseExited(event -> signUpButton.setStyle("-fx-background-color: #4a90e2; " + "-fx-text-fill: white; -fx-font-size: 14px; " + "-fx-padding: 5 10; " + "-fx-background-radius: 5; -fx-border-radius: 5"));
+            // Регистрация пользователя
         signUpButton.setOnAction(e -> {
             String email = emailField.getText();
             String username = usernameField.getText();
             String password = passwordField.getText();
 
+            // Валидация
             if (email == null || email.isEmpty() || username == null || username.isEmpty() || password == null || password.isEmpty()) {
                 showErrorDialog("Поля не могут быть пустыми!");
             } else {
@@ -109,13 +118,16 @@ public class openSignUpWindow {
         });
 
         Group elementsGroup = new Group(textReg, textEmail, emailField, textUsername, usernameField, textPassword, passwordField, signUpButton, backText);
+        root.getChildren().addAll(groupLine, elementsGroup);
 
-        root.getChildren().addAll(splitPane, elementsGroup);
+        // Настройка
         primaryStage.setScene(signUpScene);
         primaryStage.setResizable(false);
         primaryStage.show();
     }
 
+
+    // Реализация отправки электронного письма после регистрации
     private void sendWelcomeEmail(String username, String email) {
         final String host = "smtp.gmail.com";
         final String port = "587";
@@ -153,6 +165,8 @@ public class openSignUpWindow {
         }
     }
 
+
+    // В случае ошибки
     private void showErrorDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Ошибка");

@@ -33,7 +33,7 @@ public class Task {
         return description;
     }
 
-    public String isStatus() {
+    public String getStatus() {
         return status;
     }
 
