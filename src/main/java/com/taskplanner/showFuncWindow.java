@@ -107,6 +107,11 @@ public class showFuncWindow {
         taskContainer.setLayoutX(380);
         taskContainer.setLayoutY(14);
 
+            // UI (border)
+        taskContainer.setStyle("-fx-border-radius: 5px;" +
+                "-fx-border-width: 5px;" +
+                "-fx-border-color: black;");
+
 
         // Сетка (GridPane)
         GridPane taskGrid = new GridPane();
