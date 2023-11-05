@@ -155,7 +155,6 @@ public class showFuncWindow {
             // Реализация контекстного меню при нажатиях
             cardPane.setOnContextMenuRequested(event -> {
                 contextMenu.show(cardPane, event.getScreenX(), event.getScreenY());
-                    //
                 selectedTask = task;
             });
 
@@ -182,6 +181,12 @@ public class showFuncWindow {
                 // Перебор всех задач
             for (Task task : allTaskList) {
                 Pane cardPane = createCardPane(task);
+                    // Контекстное меню
+                cardPane.setOnContextMenuRequested(e -> {
+                    contextMenu.show(cardPane, e.getScreenX(), e.getScreenY());
+                    selectedTask = task;
+                });
+
                 taskGrid.add(cardPane, columnIndex, rowIndex);
                 rowIndex++;
 
@@ -206,6 +211,12 @@ public class showFuncWindow {
                 // Перебор всех задач
             for (Task task : currentTasks) {
                 Pane cardPane = createCardPane(task);
+                    // Контекстное меню
+                cardPane.setOnContextMenuRequested(e -> {
+                    contextMenu.show(cardPane, e.getScreenX(), e.getScreenY());
+                    selectedTask = task;
+                });
+
                 taskGrid.add(cardPane, columnIndex, rowIndex);
                 rowIndex++;
 
@@ -229,6 +240,13 @@ public class showFuncWindow {
                 // Перебор всех задач
             for (Task task : pastTasks) {
                 Pane cardPane = createCardPane(task);
+
+                // Контекстное меню
+                cardPane.setOnContextMenuRequested(e -> {
+                    contextMenu.show(cardPane, e.getScreenX(), e.getScreenY());
+                    selectedTask = task;
+                });
+
                 taskGrid.add(cardPane, columnIndex, rowIndex);
                 rowIndex++;
 
@@ -252,6 +270,13 @@ public class showFuncWindow {
                 // Перебор всех задач
             for (Task task : futureTasks) {
                 Pane cardPane = createCardPane(task);
+
+                // Контекстное меню
+                cardPane.setOnContextMenuRequested(e -> {
+                    contextMenu.show(cardPane, e.getScreenX(), e.getScreenY());
+                    selectedTask = task;
+                });
+
                 taskGrid.add(cardPane, columnIndex, rowIndex);
                 rowIndex++;
 
